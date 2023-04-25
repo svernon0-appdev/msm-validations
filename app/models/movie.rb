@@ -13,6 +13,10 @@
 #  director_id :integer
 #
 class Movie < ApplicationRecord
+  
+  validates(:director_id, { :presence => true })
+  validates(:title, { :uniqueness => { :scope => [:year] } })
+
   def director
     my_director_id = self.director_id
 
@@ -22,4 +26,13 @@ class Movie < ApplicationRecord
 
     return the_director
   end
+
+  def director_name_or_uh_oh
+    if self.director != nil
+      return self.director.name
+    else
+      return "Uh oh! We weren't able to find a director for this movie."
+    end
+  end
+
 end
